@@ -21,22 +21,23 @@
 <style>
   :root {
     color-scheme: light;
-    --ground: #F5F8F4;
+    --ground: #F4F8F5;
     --surface: #FFFFFF;
-    --ink: #14211C;
-    --muted: #55645D;
-    --line: #DCE4DC;
+    --ink: #12201B;
+    --muted: #52625B;
+    --line: #DDE6DF;
     --pine: #2E5A4C;
-    --pine-soft: #E4F0EA;
+    --pine-deep: #1E4236;
+    --pine-soft: #E3F0EA;
     --wheat: #A97A1F;
     --wheat-soft: #FBF1DA;
-    --shadow: 0 1px 2px rgba(20,33,28,.05), 0 12px 32px -12px rgba(20,33,28,.14);
-    --shadow-hover: 0 2px 4px rgba(20,33,28,.06), 0 22px 44px -14px rgba(46,90,76,.28);
+    --shadow: 0 1px 2px rgba(18,32,27,.05), 0 14px 34px -14px rgba(18,32,27,.16);
+    --shadow-hover: 0 2px 4px rgba(18,32,27,.06), 0 28px 50px -16px rgba(46,90,76,.32);
     --display: "Archivo", "Arial Narrow", Helvetica, sans-serif;
     --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
   }
-  /* El modo oscuro ya no se activa solo: sólo con data-theme="dark" */
+  /* El modo oscuro no se activa solo: únicamente con data-theme="dark" */
   :root[data-theme="dark"] {
     color-scheme: dark;
     --ground: #111916;
@@ -48,35 +49,33 @@
     --pine-soft: #1E2E28;
     --wheat: #D9AE5C;
     --wheat-soft: #2A2416;
-    --shadow: 0 12px 32px -12px rgba(0,0,0,.5);
-    --shadow-hover: 0 22px 44px -14px rgba(0,0,0,.6);
   }
 
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   html, body { min-height: 100%; }
   body {
     margin: 0;
-    background:
-      radial-gradient(60% 50% at 88% -8%, rgba(46,90,76,.14), transparent 70%),
-      radial-gradient(45% 40% at -6% 30%, rgba(169,122,31,.10), transparent 70%),
-      var(--ground);
-    background-repeat: no-repeat;
+    background: var(--ground);
     color: var(--ink);
     font-family: var(--body);
     font-size: 16px;
     line-height: 1.6;
-    padding-inline: clamp(16px, 5vw, 72px);
-    padding-block: clamp(20px, 4vw, 48px);
+    padding-inline: clamp(12px, 4vw, 56px);
+    padding-block: clamp(12px, 2.4vw, 24px) clamp(20px, 4vw, 48px);
   }
   .page {
-    max-width: 1180px;
+    max-width: 1240px;
     margin-inline: auto;
     display: grid;
-    gap: clamp(32px, 5vw, 64px);
+    gap: clamp(28px, 4.5vw, 56px);
   }
 
-  /* Encabezado */
+  /* Barra superior (estilo portal) */
   .top {
+    position: sticky;
+    top: 10px;
+    z-index: 5;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -86,45 +85,72 @@
     font-size: 12px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--muted);
-    background: rgba(255,255,255,.72);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    color: var(--ink);
+    background: rgba(255,255,255,.86);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
     border: 1px solid var(--line);
     border-radius: 999px;
-    padding: 12px 22px;
+    padding: 11px 12px 11px 24px;
     box-shadow: var(--shadow);
   }
+  .top span:first-child::before {
+    content: "";
+    display: inline-block;
+    width: 10px; height: 10px;
+    margin-right: 10px;
+    border-radius: 3px;
+    background: var(--pine);
+    box-shadow: 0 0 0 3px var(--pine-soft);
+    vertical-align: -1px;
+  }
   .top span:last-child {
-    background: var(--pine-soft);
-    color: var(--pine);
+    background: var(--pine);
+    color: #fff;
     border-radius: 999px;
-    padding: 4px 12px;
+    padding: 7px 18px;
   }
 
-  /* Hero */
+  /* Hero a todo ancho con escena ilustrada */
   .hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: clamp(22px, 3vw, 36px);
+    min-height: clamp(520px, 62vw, 660px);
     display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-    gap: clamp(24px, 5vw, 64px);
-    align-items: center;
-    padding-block: clamp(8px, 3vw, 32px);
+    align-items: start;
+    background: #CDE8DE;
+    box-shadow: var(--shadow);
+  }
+  .hero-art {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    z-index: -1;
+  }
+  .hero-copy {
+    display: grid;
+    gap: 16px;
+    max-width: min(560px, 48%);
+    padding: clamp(28px, 4.4vw, 56px);
   }
   .mark {
     font-family: var(--display);
     font-stretch: 125%;
     font-weight: 800;
-    font-size: clamp(96px, 19vw, 230px);
+    font-size: clamp(88px, 12vw, 160px);
     line-height: 0.8;
     letter-spacing: -0.02em;
-    margin: 0;
-    color: var(--pine);
-    background: linear-gradient(135deg, var(--pine) 30%, #4C8B74 100%);
+    margin: 0 0 6px;
+    color: var(--pine-deep);
+    background: linear-gradient(135deg, var(--pine-deep) 30%, #3F7A64 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     position: relative;
-    padding-bottom: 26px;
+    padding-bottom: 24px;
+    width: fit-content;
   }
   /* surcos: líneas de cultivo bajo el nombre */
   .mark::after {
@@ -132,76 +158,80 @@
     position: absolute;
     left: 0; right: 0; bottom: 0;
     height: 12px;
-    background: repeating-linear-gradient(
-      to bottom,
-      var(--wheat) 0 2px,
-      transparent 2px 5px
-    );
-    opacity: 0.9;
+    background: repeating-linear-gradient(to bottom, var(--wheat) 0 2px, transparent 2px 5px);
     border-radius: 2px;
   }
-  .lede {
-    display: grid;
-    gap: 14px;
-    max-width: 40ch;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 24px;
-    padding: clamp(22px, 3vw, 34px);
-    box-shadow: var(--shadow);
-  }
+  .lede { display: contents; }
   .lede .eyebrow {
     font-family: var(--mono);
     font-size: 12px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--wheat);
-    background: var(--wheat-soft);
+    background: rgba(255,255,255,.85);
     justify-self: start;
     border-radius: 999px;
-    padding: 4px 12px;
+    padding: 5px 14px;
     margin: 0;
+    box-shadow: var(--shadow);
   }
   .lede h1 {
     font-family: var(--display);
     font-stretch: 100%;
     font-weight: 700;
-    font-size: clamp(24px, 2.6vw, 32px);
-    line-height: 1.18;
-    letter-spacing: -0.01em;
+    font-size: clamp(26px, 3.2vw, 42px);
+    line-height: 1.12;
+    letter-spacing: -0.015em;
     margin: 0;
+    color: var(--ink);
     text-wrap: balance;
   }
-  .lede p { margin: 0; color: var(--muted); }
+  .lede p:not(.eyebrow) {
+    margin: 0;
+    color: #2F423B;
+    font-size: clamp(16px, 1.4vw, 18px);
+    max-width: 38ch;
+  }
+  /* el orden visual: etiqueta, título, bajada, luego el nombre grande arriba */
+  .hero-copy { grid-auto-flow: row; }
+  .hero-copy .mark { order: -1; }
 
-  /* Rubros */
+  /* Rubros: tarjetas tipo listado */
   .rubros {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(14px, 2vw, 24px);
+    gap: clamp(14px, 2vw, 26px);
   }
   .rubro {
     display: grid;
-    grid-template-rows: auto auto 1fr auto;
-    gap: 14px;
-    padding: clamp(22px, 2.4vw, 30px);
+    grid-template-rows: auto 1fr;
     background: var(--surface);
     border: 1px solid var(--line);
-    border-radius: 24px;
+    border-radius: 26px;
+    overflow: hidden;
     box-shadow: var(--shadow);
-    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    transition: transform .3s ease, box-shadow .3s ease;
   }
-  .rubro:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-hover);
-    border-color: color-mix(in srgb, var(--pine) 40%, var(--line));
+  .rubro:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+  .media { position: relative; overflow: hidden; aspect-ratio: 16 / 9; }
+  .media svg { width: 100%; height: 100%; display: block; transition: transform .6s ease; }
+  .rubro:hover .media svg { transform: scale(1.05); }
+  .body {
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 12px;
+    padding: 0 clamp(20px, 2.2vw, 28px) clamp(22px, 2.4vw, 28px);
   }
-  .rubro svg {
+  .body .ico {
     width: 56px; height: 56px;
-    padding: 11px;
-    border-radius: 16px;
-    background: var(--pine-soft);
+    padding: 12px;
+    margin-top: -30px;
+    position: relative;
+    z-index: 1;
+    border-radius: 18px;
+    background: var(--surface);
     color: var(--pine);
+    box-shadow: 0 8px 20px -8px rgba(18,32,27,.3), 0 0 0 1px var(--line);
   }
   .rubro h2 {
     font-family: var(--display);
@@ -209,7 +239,7 @@
     font-weight: 700;
     font-size: 21px;
     line-height: 1.22;
-    margin: 0;
+    margin: 4px 0 0;
     text-wrap: balance;
   }
   .rubro p { margin: 0; color: var(--muted); max-width: 40ch; }
@@ -222,60 +252,67 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    padding-top: 4px;
+    padding-top: 6px;
   }
-  .rubro .tag span {
-    background: var(--pine-soft);
-    border-radius: 999px;
-    padding: 4px 12px;
-  }
+  .rubro .tag span { background: var(--pine-soft); border-radius: 999px; padding: 5px 13px; }
 
-  /* Pie / contacto */
+  /* Contacto: banda destacada */
   .foot {
+    position: relative;
+    overflow: hidden;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 16px;
+    gap: 18px;
     flex-wrap: wrap;
     font-size: 13px;
-    color: var(--muted);
-    background: var(--pine);
     color: #DCEBE4;
-    border-radius: 24px;
-    padding: clamp(20px, 3vw, 30px) clamp(20px, 3vw, 36px);
+    background: linear-gradient(120deg, var(--pine-deep), var(--pine));
+    border-radius: clamp(22px, 3vw, 32px);
+    padding: clamp(24px, 3.6vw, 44px) clamp(22px, 3.6vw, 48px);
     box-shadow: var(--shadow);
   }
-  .foot strong { font-weight: 500; }
-  .contacto { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+  .foot::before {
+    content: "";
+    position: absolute; inset: auto 0 0 0; height: 40%;
+    background: repeating-linear-gradient(to bottom, rgba(255,255,255,.08) 0 2px, transparent 2px 7px);
+    -webkit-mask-image: linear-gradient(to top, #000, transparent);
+    mask-image: linear-gradient(to top, #000, transparent);
+    pointer-events: none;
+  }
+  .foot > * { position: relative; }
+  .contacto { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 14px; }
   .contacto .lbl {
     font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em;
-    text-transform: uppercase; color: #F3D89A;
-    margin-right: 4px;
+    text-transform: uppercase; color: #F3D89A; margin-right: 6px;
   }
   .contacto .val {
-    color: #fff; font-size: 15px; font-weight: 500; text-decoration: none;
-    background: rgba(255,255,255,.12);
-    border: 1px solid rgba(255,255,255,.18);
-    border-radius: 999px;
-    padding: 8px 16px;
-    transition: background-color .2s ease, transform .2s ease;
+    color: var(--pine-deep); background: #fff;
+    font-size: 15px; font-weight: 500; text-decoration: none;
+    border-radius: 999px; padding: 10px 20px;
+    box-shadow: 0 8px 18px -8px rgba(0,0,0,.35);
+    transition: transform .2s ease, background-color .2s ease;
   }
-  .contacto a.val:hover { background: rgba(255,255,255,.22); transform: translateY(-1px); }
-  a:focus-visible { outline: 2px solid var(--wheat); outline-offset: 3px; border-radius: 999px; }
+  .contacto a.val:hover { transform: translateY(-2px); background: #FFF6E2; }
+  a:focus-visible { outline: 3px solid var(--wheat); outline-offset: 3px; border-radius: 999px; }
 
   @media (max-width: 820px) {
-    .hero { grid-template-columns: 1fr; align-items: start; }
+    .hero { min-height: 0; align-items: start; }
+    .hero-copy { max-width: none; padding: 26px 22px 270px; }
+    .hero-art { top: auto; height: 300px; }
     .rubros { grid-template-columns: 1fr; }
-    .top { border-radius: 20px; }
-    .lede { max-width: none; }
+    .top { border-radius: 22px; padding-left: 18px; }
   }
   @media (prefers-reduced-motion: no-preference) {
     .mark::after { animation: grow .9s cubic-bezier(.2,.7,.2,1) both; transform-origin: left; }
     @keyframes grow { from { transform: scaleX(.15); } to { transform: scaleX(1); } }
+    .cloud { animation: drift 40s linear infinite alternate; }
+    @keyframes drift { from { transform: translateX(-18px); } to { transform: translateX(28px); } }
   }
   @media (prefers-reduced-motion: reduce) {
-    .rubro, .contacto .val { transition: none; }
-    .rubro:hover { transform: none; }
+    .rubro, .media svg, .contacto .val { transition: none; }
+    .rubro:hover, .rubro:hover .media svg { transform: none; }
+    html { scroll-behavior: auto; }
   }
 </style>
 </head>
@@ -287,49 +324,194 @@
   </header>
 
   <section class="hero">
-    <p class="mark" aria-label="SER">SER</p>
-    <div class="lede">
-      <p class="eyebrow">Quiénes somos</p>
-      <h1>Invertimos en activos reales: tierra, propiedades y rentas.</h1>
-      <p>SER es una sociedad de inversiones con presencia en tres rubros complementarios.</p>
+    <svg class="hero-art" viewBox="0 0 1200 660" preserveAspectRatio="xMaxYMax slice" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="hSky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#B7DFD1"/>
+          <stop offset="0.65" stop-color="#EAF6F1"/>
+          <stop offset="1" stop-color="#F7FBF8"/>
+        </linearGradient>
+        <linearGradient id="hField" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#5B9A80"/>
+          <stop offset="1" stop-color="#2E5A4C"/>
+        </linearGradient>
+        <pattern id="hWin" width="16" height="20" patternUnits="userSpaceOnUse">
+          <rect x="4" y="5" width="8" height="10" rx="1" fill="#FFFFFF" opacity=".6"/>
+        </pattern>
+      </defs>
+      <rect width="1200" height="660" fill="url(#hSky)"/>
+      <circle cx="1010" cy="150" r="118" fill="#F3D48A" opacity=".28"/>
+      <circle cx="1010" cy="150" r="66" fill="#F1C96E" opacity=".9"/>
+      <g class="cloud" fill="#FFFFFF" opacity=".85">
+        <ellipse cx="640" cy="120" rx="70" ry="18"/><ellipse cx="690" cy="106" rx="48" ry="16"/>
+        <ellipse cx="860" cy="200" rx="60" ry="14"/><ellipse cx="900" cy="188" rx="38" ry="12"/>
+      </g>
+      <path d="M0 470 C180 400 340 430 520 455 S880 400 1200 440 V660 H0Z" fill="#CBE5DA"/>
+      <!-- ciudad -->
+      <g>
+        <rect x="660" y="250" width="92" height="230" fill="#A8CFC0"/>
+        <rect x="764" y="200" width="80" height="280" fill="#9CC7B7"/>
+        <rect x="858" y="285" width="100" height="195" fill="#A8CFC0"/>
+        <rect x="972" y="230" width="84" height="250" fill="#9CC7B7"/>
+        <rect x="1070" y="300" width="110" height="180" fill="#A8CFC0"/>
+        <rect x="700" y="330" width="116" height="150" fill="#7FB6A2"/>
+        <rect x="830" y="305" width="92" height="175" fill="#6FAA95"/>
+        <rect x="936" y="350" width="120" height="130" fill="#7FB6A2"/>
+        <rect x="1040" y="318" width="100" height="162" fill="#6FAA95"/>
+        <g fill="url(#hWin)">
+          <rect x="660" y="250" width="92" height="230"/><rect x="764" y="200" width="80" height="280"/>
+          <rect x="858" y="285" width="100" height="195"/><rect x="972" y="230" width="84" height="250"/>
+          <rect x="1070" y="300" width="110" height="180"/><rect x="700" y="330" width="116" height="150"/>
+          <rect x="830" y="305" width="92" height="175"/><rect x="936" y="350" width="120" height="130"/>
+          <rect x="1040" y="318" width="100" height="162"/>
+        </g>
+        <rect x="780" y="184" width="4" height="18" fill="#6FAA95"/>
+      </g>
+      <!-- casa -->
+      <g transform="translate(90 0)">
+        <rect x="548" y="400" width="130" height="82" fill="#FFFFFF"/>
+        <polygon points="536,404 613,346 690,404" fill="#A97A1F"/>
+        <rect x="596" y="432" width="26" height="50" fill="#2E5A4C"/>
+        <rect x="562" y="418" width="24" height="24" fill="#BFE3D8"/>
+        <rect x="640" y="418" width="24" height="24" fill="#BFE3D8"/>
+        <rect x="638" y="352" width="16" height="30" fill="#8E651A"/>
+      </g>
+      <!-- campo con surcos -->
+      <path d="M0 520 C280 470 700 500 1200 462 V660 H0Z" fill="url(#hField)"/>
+      <g fill="none" stroke="#1E4236" stroke-width="3" opacity=".45">
+        <path d="M0 552 C280 506 700 534 1200 496"/>
+        <path d="M0 586 C280 542 700 570 1200 528"/>
+        <path d="M0 620 C280 578 700 606 1200 562"/>
+        <path d="M0 654 C280 614 700 642 1200 598"/>
+      </g>
+      <g fill="none" stroke="#F1C96E" stroke-width="2" opacity=".5">
+        <path d="M0 538 C280 490 700 518 1200 480"/>
+        <path d="M0 570 C280 526 700 554 1200 514"/>
+        <path d="M0 604 C280 562 700 590 1200 546"/>
+      </g>
+      <!-- árboles -->
+      <g>
+        <rect x="726" y="486" width="6" height="26" fill="#5E4A2C"/><circle cx="729" cy="474" r="20" fill="#3F7A64"/>
+        <rect x="1110" y="474" width="6" height="30" fill="#5E4A2C"/><circle cx="1113" cy="460" r="24" fill="#3F7A64"/>
+      </g>
+    </svg>
+
+    <div class="hero-copy">
+      <p class="mark" aria-label="SER">SER</p>
+      <div class="lede">
+        <p class="eyebrow">Quiénes somos</p>
+        <h1>Invertimos en activos reales: tierra, propiedades y rentas.</h1>
+        <p>SER es una sociedad de inversiones con presencia en tres rubros complementarios.</p>
+      </div>
     </div>
   </section>
 
   <section class="rubros" aria-label="Rubros de inversión">
     <article class="rubro">
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <rect x="9" y="9" width="18" height="9" rx="1.5" transform="rotate(-35 18 13.5)" fill="none"/>
-        <path d="M22 20 L36 34"/>
-        <path d="M8 42 H28"/>
-      </svg>
-      <h2>Compra y venta de propiedades en remates</h2>
-      <p>Adquirimos inmuebles en remates judiciales, los regularizamos y los devolvemos al mercado.</p>
-      <div class="tag"><span>Remates</span><span>Compraventa</span></div>
+      <div class="media">
+        <svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="s1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BFE3D8"/><stop offset="1" stop-color="#F3FAF6"/></linearGradient>
+          </defs>
+          <rect width="400" height="225" fill="url(#s1)"/>
+          <circle cx="330" cy="52" r="26" fill="#F1C96E" opacity=".9"/>
+          <path d="M0 150 C100 130 260 138 400 128 V225 H0Z" fill="#CBE5DA"/>
+          <rect y="168" width="400" height="57" fill="#7FB6A2"/>
+          <rect x="120" y="92" width="160" height="84" fill="#FFFFFF"/>
+          <polygon points="108,96 200,36 292,96" fill="#2E5A4C"/>
+          <rect x="188" y="124" width="26" height="52" fill="#A97A1F"/>
+          <rect x="138" y="112" width="30" height="30" fill="#BFE3D8"/>
+          <rect x="232" y="112" width="30" height="30" fill="#BFE3D8"/>
+          <rect x="236" y="50" width="16" height="30" fill="#1E4236"/>
+          <g stroke="#FFFFFF" stroke-width="3" opacity=".9"><path d="M20 190 H100 M300 190 H380 M20 200 H100 M300 200 H380"/></g>
+          <rect x="60" y="150" width="6" height="30" fill="#5E4A2C"/><circle cx="63" cy="136" r="26" fill="#3F7A64"/>
+          <rect x="336" y="150" width="6" height="30" fill="#5E4A2C"/><circle cx="339" cy="136" r="26" fill="#4E8A73"/>
+        </svg>
+      </div>
+      <div class="body">
+        <svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="9" y="9" width="18" height="9" rx="1.5" transform="rotate(-35 18 13.5)" fill="none"/>
+          <path d="M22 20 L36 34"/>
+          <path d="M8 42 H28"/>
+        </svg>
+        <h2>Compra y venta de propiedades en remates</h2>
+        <p>Adquirimos inmuebles en remates judiciales, los regularizamos y los devolvemos al mercado.</p>
+        <div class="tag"><span>Remates</span><span>Compraventa</span></div>
+      </div>
     </article>
 
     <article class="rubro">
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M7 42 V18 L24 7 L41 18 V42"/>
-        <path d="M4 42 H44"/>
-        <circle cx="24" cy="24" r="4.5"/>
-        <path d="M24 28.5 V38 M24 34 H28"/>
-      </svg>
-      <h2>Arriendo de inmuebles</h2>
-      <p>Administramos un portafolio de inmuebles en arriendo, incluido un strip center temático, con foco en rentas estables.</p>
-      <div class="tag"><span>Locales</span><span>Strip center</span><span>Rentas</span></div>
+      <div class="media">
+        <svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="s2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D6ECE3"/><stop offset="1" stop-color="#F7FBF8"/></linearGradient>
+          </defs>
+          <rect width="400" height="225" fill="url(#s2)"/>
+          <circle cx="60" cy="50" r="24" fill="#F1C96E" opacity=".85"/>
+          <rect y="160" width="400" height="65" fill="#9DBFB2"/>
+          <g stroke="#FFFFFF" stroke-width="3" opacity=".85"><path d="M30 186 H110 M150 186 H230 M270 186 H370 M30 202 H110 M150 202 H230 M270 202 H370"/></g>
+          <rect x="44" y="88" width="312" height="72" fill="#FFFFFF"/>
+          <rect x="36" y="76" width="328" height="14" fill="#2E5A4C"/>
+          <g>
+            <path d="M52 98 H128 L122 116 H58Z" fill="#A97A1F"/>
+            <path d="M136 98 H212 L206 116 H142Z" fill="#2E5A4C"/>
+            <path d="M220 98 H296 L290 116 H226Z" fill="#A97A1F"/>
+            <path d="M304 98 H348 L344 116 H308Z" fill="#2E5A4C"/>
+          </g>
+          <g fill="#BFE3D8"><rect x="58" y="122" width="64" height="38"/><rect x="142" y="122" width="64" height="38"/><rect x="226" y="122" width="64" height="38"/><rect x="310" y="122" width="34" height="38"/></g>
+          <g fill="#FFFFFF" opacity=".55"><rect x="66" y="122" width="10" height="38"/><rect x="150" y="122" width="10" height="38"/><rect x="234" y="122" width="10" height="38"/></g>
+          <rect x="16" y="132" width="6" height="30" fill="#5E4A2C"/><circle cx="19" cy="120" r="20" fill="#3F7A64"/>
+          <rect x="378" y="132" width="6" height="30" fill="#5E4A2C"/><circle cx="381" cy="120" r="20" fill="#4E8A73"/>
+        </svg>
+      </div>
+      <div class="body">
+        <svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M7 42 V18 L24 7 L41 18 V42"/>
+          <path d="M4 42 H44"/>
+          <circle cx="24" cy="24" r="4.5"/>
+          <path d="M24 28.5 V38 M24 34 H28"/>
+        </svg>
+        <h2>Arriendo de inmuebles</h2>
+        <p>Administramos un portafolio de inmuebles en arriendo, incluido un strip center temático, con foco en rentas estables.</p>
+        <div class="tag"><span>Locales</span><span>Strip center</span><span>Rentas</span></div>
+      </div>
     </article>
 
     <article class="rubro">
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M4 40 C14 34 34 34 44 40"/>
-        <path d="M8 32 C17 27 31 27 40 32"/>
-        <path d="M24 26 V8"/>
-        <path d="M24 14 C19 13 17 10 17 7 C21 7 24 10 24 14 Z"/>
-        <path d="M24 19 C29 18 31 15 31 12 C27 12 24 15 24 19 Z"/>
-      </svg>
-      <h2>Explotación agrícola</h2>
-      <p>Trabajamos un predio agrícola con producción propia, sumando a la sociedad un activo productivo ligado a la tierra.</p>
-      <div class="tag"><span>Predio</span><span>Producción</span></div>
+      <div class="media">
+        <svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="s3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C6E6DA"/><stop offset="1" stop-color="#F6FBF1"/></linearGradient>
+            <linearGradient id="s3f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6FAA6A"/><stop offset="1" stop-color="#3F7A50"/></linearGradient>
+          </defs>
+          <rect width="400" height="225" fill="url(#s3)"/>
+          <circle cx="300" cy="62" r="30" fill="#F1C96E" opacity=".95"/>
+          <path d="M0 120 C90 96 190 116 260 104 S360 100 400 108 V225 H0Z" fill="#B9D9C6"/>
+          <path d="M0 132 V225 H400 V132 C300 122 100 122 0 132Z" fill="url(#s3f)"/>
+          <g stroke="#1F4A36" stroke-width="3" opacity=".5" fill="none">
+            <path d="M200 128 L-60 225"/><path d="M200 128 L10 225"/><path d="M200 128 L90 225"/>
+            <path d="M200 128 L170 225"/><path d="M200 128 L240 225"/><path d="M200 128 L310 225"/>
+            <path d="M200 128 L390 225"/><path d="M200 128 L470 225"/>
+          </g>
+          <g stroke="#F1C96E" stroke-width="2" opacity=".55" fill="none">
+            <path d="M200 128 L50 225"/><path d="M200 128 L130 225"/><path d="M200 128 L205 225"/><path d="M200 128 L275 225"/><path d="M200 128 L350 225"/>
+          </g>
+          <rect x="336" y="98" width="6" height="34" fill="#5E4A2C"/><circle cx="339" cy="86" r="26" fill="#3F7A64"/>
+          <rect x="52" y="104" width="5" height="26" fill="#5E4A2C"/><circle cx="54" cy="94" r="18" fill="#4E8A73"/>
+        </svg>
+      </div>
+      <div class="body">
+        <svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 40 C14 34 34 34 44 40"/>
+          <path d="M8 32 C17 27 31 27 40 32"/>
+          <path d="M24 26 V8"/>
+          <path d="M24 14 C19 13 17 10 17 7 C21 7 24 10 24 14 Z"/>
+          <path d="M24 19 C29 18 31 15 31 12 C27 12 24 15 24 19 Z"/>
+        </svg>
+        <h2>Explotación agrícola</h2>
+        <p>Trabajamos un predio agrícola con producción propia, sumando a la sociedad un activo productivo ligado a la tierra.</p>
+        <div class="tag"><span>Predio</span><span>Producción</span></div>
+      </div>
     </article>
   </section>
 
